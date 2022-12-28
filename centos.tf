@@ -147,6 +147,8 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     admin_username        = "kafkaadmin"
     disable_password_authentication = true
 
+    custom_data = filebase64("custom_data.tpl")
+
     os_disk {
         name              = "myOsDisk${count.index}"
         caching           = "ReadWrite"
