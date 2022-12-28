@@ -147,7 +147,7 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     admin_username        = "kafkaadmin"
     disable_password_authentication = true
 
-    custom_data = filebase64("custom_data.tpl")
+   # custom_data = filebase64("customdata.tpl")
 
     os_disk {
         name              = "myOsDisk${count.index}"
@@ -167,9 +167,39 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
         username       = "kafkaadmin"
         public_key     = file("~/.ssh/id_rsa.pub")
     }
+
     boot_diagnostics {
         storage_account_uri = azurerm_storage_account.mystorageaccount.primary_blob_endpoint
     }
+
+    provisioner "file" {
+     connection {
+        user = "kafkaadmin"
+        type = "ssh"
+        private_key = file("~/.ssh/id_rsa")
+        timeout = "20m"
+        agent = false
+        host = self.public_ip_address
+    }
+    source      = "customdata.sh"
+    destination = "/tmp/customdata.sh"
+  }
+
+    provisioner "remote-exec" {
+     connection {
+        user = "kafkaadmin"
+        type = "ssh"
+        private_key = file("~/.ssh/id_rsa")
+        timeout = "20m"
+        agent = false
+        host = self.public_ip_address
+    }
+    inline = [
+      "sleep 120",
+      "chmod +x /tmp/customdata.sh",
+      "/tmp/customdata.sh",
+    ]
+  }
 
     tags = {
         environment = "Terraform Demo"
