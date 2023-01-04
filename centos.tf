@@ -185,32 +185,32 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     destination = "/tmp/customdata.sh"
   }
 
-  provisioner file {
-    connection {
-      user = "kafkaadmin"
-      type = "ssh"
-      private_key = file("~/.ssh/id_rsa")
-      timeout = "20m"
-      agent = false
-      host = self.public_ip_address
-    }
-    destination = "/etc/ssh/sshd_config"
-    source      = "sshd_config"
-  }
-
-  provisioner remote-exec {
-    connection {
-      user = "kafkaadmin"
-      type = "ssh"
-      private_key = file("~/.ssh/id_rsa")
-      timeout = "20m"
-      agent = false
-      host = self.public_ip_address
-    }
-    inline = [
-      "systemctl restart sshd", # This works Centos. If you use another OS, you must change this line.
-    ]
-  }
+#  provisioner file {
+#    connection {
+#      user = "kafkaadmin"
+#      type = "ssh"
+#      private_key = file("~/.ssh/id_rsa")
+#      timeout = "20m"
+#      agent = false
+#      host = self.public_ip_address
+#    }
+#    destination = "/etc/ssh/sshd_config"
+#    source      = "sshd_config"
+#  }
+#
+#  provisioner remote-exec {
+#    connection {
+#      user = "kafkaadmin"
+#      type = "ssh"
+#      private_key = file("~/.ssh/id_rsa")
+#      timeout = "20m"
+#      agent = false
+#      host = self.public_ip_address
+#    }
+#    inline = [
+#      "systemctl restart sshd", # This works Centos. If you use another OS, you must change this line.
+#    ]
+#  }
     provisioner "remote-exec" {
      connection {
         user = "kafkaadmin"
