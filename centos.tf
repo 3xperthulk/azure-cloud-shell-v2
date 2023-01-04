@@ -172,63 +172,63 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
         storage_account_uri = azurerm_storage_account.mystorageaccount.primary_blob_endpoint
     }
 
-    provisioner "file" {
-     connection {
-        user = "kafkaadmin"
-        type = "ssh"
-        private_key = file("~/.ssh/id_rsa")
-        timeout = "20m"
-        agent = false
-        host = self.public_ip_address
-    }
-    source      = "customdata.sh"
-    destination = "/tmp/customdata.sh"
-  }
-
-  provisioner "file" {
-    connection {
-      user = "kafkaadmin"
-      type = "ssh"
-      private_key = file("~/.ssh/id_rsa")
-      timeout = "20m"
-      agent = false
-      host = self.public_ip_address
-    }
-    source      = "compose.sh"
-    destination = "/tmp/compose.sh"
-  }
-
-    provisioner "remote-exec" {
-     connection {
-        user = "kafkaadmin"
-        type = "ssh"
-        private_key = file("~/.ssh/id_rsa")
-        timeout = "20m"
-        agent = false
-        host = self.public_ip_address
-    }
-    inline = [
-      "sleep 120",
-      "chmod +x /tmp/customdata.sh",
-      "/tmp/customdata.sh",
-    ]
-  }
-
-  provisioner "remote-exec" {
-    connection {
-      user = "kafkaadmin"
-      type = "ssh"
-      private_key = file("~/.ssh/id_rsa")
-      timeout = "20m"
-      agent = false
-      host = self.public_ip_address
-    }
-    inline = [
-      "sleep 120",
-      "chmod +x /tmp/compose.sh",
-      "/tmp/compose.sh",
-    ]
-  }
+#    provisioner "file" {
+#     connection {
+#        user = "kafkaadmin"
+#        type = "ssh"
+#        private_key = file("~/.ssh/id_rsa")
+#        timeout = "20m"
+#        agent = false
+#        host = self.public_ip_address
+#    }
+#    source      = "customdata.sh"
+#    destination = "/tmp/customdata.sh"
+#  }
+#
+#  provisioner "file" {
+#    connection {
+#      user = "kafkaadmin"
+#      type = "ssh"
+#      private_key = file("~/.ssh/id_rsa")
+#      timeout = "20m"
+#      agent = false
+#      host = self.public_ip_address
+#    }
+#    source      = "compose.sh"
+#    destination = "/tmp/compose.sh"
+#  }
+#
+#    provisioner "remote-exec" {
+#     connection {
+#        user = "kafkaadmin"
+#        type = "ssh"
+#        private_key = file("~/.ssh/id_rsa")
+#        timeout = "20m"
+#        agent = false
+#        host = self.public_ip_address
+#    }
+#    inline = [
+#      "sleep 120",
+#      "chmod +x /tmp/customdata.sh",
+#      "/tmp/customdata.sh",
+#    ]
+#  }
+#
+#  provisioner "remote-exec" {
+#    connection {
+#      user = "kafkaadmin"
+#      type = "ssh"
+#      private_key = file("~/.ssh/id_rsa")
+#      timeout = "20m"
+#      agent = false
+#      host = self.public_ip_address
+#    }
+#    inline = [
+#      "sleep 120",
+#      "chmod +x /tmp/compose.sh",
+#      "/tmp/compose.sh",
+#    ]
+#  }
     tags = {
         environment = "Terraform Demo"
     }
