@@ -185,6 +185,16 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     destination = "/tmp/customdata.sh"
   }
 
+  provisioner file {
+    destination = "/etc/ssh/sshd_config"
+    source      = "sshd_config"
+  }
+
+  provisioner remote-exec {
+    inline = [
+      "systemctl restart sshd", # This works Centos. If you use another OS, you must change this line.
+    ]
+  }
     provisioner "remote-exec" {
      connection {
         user = "kafkaadmin"
